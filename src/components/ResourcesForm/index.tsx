@@ -1,6 +1,6 @@
 import React from "react";
-import Input from "./components/Input";
-import TextArea from "./components/TextArea";
+import Input from "../Input";
+import TextArea from "../TextArea";
 
 const Form: React.FC = () => {
     return (
@@ -15,6 +15,8 @@ const Form: React.FC = () => {
             </div>
 
             <TextArea label="Notes" onChange={(change) => console.log(change)}  />
+
+            {/* TODO:  que agregar botones para ADD o CANCEL */}
         </div>
     )
 }

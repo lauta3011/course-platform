@@ -12,8 +12,8 @@ const Popup: React.FC<IPopup> = ({ handleClose, children }) => {
         <div className="fixed flex justify-center h-screen w-screen z-10">
             <div className="absolute opacity-40 w-screen h-screen bg-slate-700 "></div>
             
-            <div className="relative top-24 w-9/12 bg-slate-100 rounded">
-                <div className="flex justify-end" onClick={() => handleClose()}>
+            <div className="relative top-24 w-9/12">
+                <div className="flex justify-end text-slate-50 cursor-pointer" onClick={() => handleClose()}>
                     <Icon iconBkg="transparent" opacity="100%" size={28} icon={faXmark} /> 
                 </div>
 
