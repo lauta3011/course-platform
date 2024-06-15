@@ -1,22 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { taskDetails } from "../../utils/test-data";
+import { IResources } from "../../interfaces";
+import ActionButton from "../ActionButton";
+import Resource from "../Resource";
+import ResourcesForm from "../ResourcesForm";
 
-interface IResources {
-    taskId: number
-};
-
-const Resources: React.FC<IResources> = ({ taskId }) => {
+const Resources: React.FC<IResources> = ({ resources }) => {
+    const [addResource, setAddResource] = useState(false);
     return (
-        <div className="bg-slate-50 flex-col ml-6 mr-6 pt-4 pb-4 -mt-6 rounded shadow-inner">
-            {taskDetails?.map((tD, index) => {
-                return (
-                    <div key={index} className="flex mt-2 mb-2 p-4 hover:bg-slate-200">
-                        <h3 className="font-semibold mr-6">{tD.title}</h3>
-                        <span>{tD.shortDesc}</span>
-                    </div>
-                )
-            })}
+        <div className="bg-slate-50 relative flex-col ml-6 mr-6 pt-4 pb-4 -top-10 rounded shadow-inner">
+            <div className="bg-slate-400 h-16 flex justify-end">
+                <ActionButton handlePrimary={() => setAddResource(true)} secondAction={false} primaryActionText="ADD RESOURCE" />
+            </div>
+
+            {addResource && <ResourcesForm />}
+            
+            {
+                resources.map((res, index) => {
+                    return (
+                        <Resource key={index} {...res} />
+                    )
+                })
+            }
+
         </div>
     )
 }

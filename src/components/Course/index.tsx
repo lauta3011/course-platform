@@ -1,29 +1,26 @@
 import React, { useState }  from "react";
 
-import { faArrowDown, faEraser, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faFolder} from "@fortawesome/free-solid-svg-icons";
 
-import Button from "../Button";
 import Icon from "../Icon";
 import Resources from "../Resources";
+import { IResource } from "../../interfaces";
 
-interface IItem {
+interface ICourseItem {
     id: number,
     name: string,
     desc: string,
+    resources: IResource[]
 }
 
-const Item: React.FC<IItem> = ({ id, name, desc }) => {
+const Course: React.FC<ICourseItem> = ({ id, name, desc, resources }) => {
     const [showResources, setShowResources] = useState(false);
-
-    function addNewResource() {
-        console.log('agrega resource')
-    }
     
     return (
         <>
             <div onClick={() => setShowResources(!showResources)} className="bg-slate-200 h-28 relative m-5 z-10 flex items-center justify-between overflow-hidden rounded shadow-2xl">
                 <div className="flex items-center m-4" >
-                    <Icon opacity="100%" size={28} iconBkg="#36d336" icon={faEraser} />
+                    <Icon opacity="100%" size={28} iconBkg="#36d336" icon={faFolder} />
 
                     <div className="ml-4">
                         <h1 className="text-slate-950 text-4xl">{name}</h1>
@@ -32,13 +29,13 @@ const Item: React.FC<IItem> = ({ id, name, desc }) => {
                 </div>
 
                 <div className="flex justify-center">
-                    {!showResources ? <Icon opacity="55%" size={28} iconBkg="transparent" icon={faArrowDown} /> : <Button handleClick={() => addNewResource()} height={45} width={98} icon={faPlus} />}
+                    {!showResources && <Icon opacity="55%" size={28} iconBkg="transparent" icon={faArrowDown} /> }
                 </div>
             </div>
 
-            {showResources && <Resources taskId={id} />}
+            {showResources && <Resources resources={resources} />}
         </>
     )
 }
 
-export default Item;
+export default Course;

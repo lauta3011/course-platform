@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import Popup from "../components/Popup";
 import Banner from "../components/Banner";
-import TaskFeed from "../components/TaskFeed";
-import TaskForm from "../components/TaskForm";
+import Courses from "../components/Courses";
+import CoursesForm from "../components/CoursesForm";
 import { useStore } from "../store";
 
 const Home: React.FC = () => {
@@ -11,7 +11,7 @@ const Home: React.FC = () => {
     const { getCourses } = useStore((state) => state);
 
     useEffect(() => {
-        getCourses()
+        getCourses();
 
         return () => {
             getCourses();
@@ -21,11 +21,11 @@ const Home: React.FC = () => {
     return (
         <div className="h-screen flex flex-col">
             <Banner addNewItem={() => setShowPopup(!showPopup)}/>
-            <TaskFeed />
+            <Courses />
 
             {showPopup && 
-                <Popup  handleClose={() => setShowPopup(false)}>
-                    <TaskForm />
+                <Popup handleClose={() => setShowPopup(false)}>
+                    <CoursesForm handleClose={() => setShowPopup(false)}/>
                 </Popup>
             }
         </div>

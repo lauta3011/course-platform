@@ -1,6 +1,6 @@
 import React from "react";
 
-import Button from "../Button";
+import Button from "../BannerButton";
 
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 

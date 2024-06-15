@@ -1,17 +1,9 @@
 import React from "react";
+import { IInput } from "../../interfaces";
 
-interface IInput {
-    type: string,
-    label: string,
-    onChange: (change: string) => void
-}
-
-const Input: React.FC<IInput> = ({ type, label, onChange }) => {
+const Input: React.FC<IInput> = ({ type, size, label, onChange }) => {
     return (
-        <div className="flex-col justify-center flex-1 p-4 bg-slate-300 m-4">
-            <label>{label}</label>
-            <input className="w-5/6 ml-4" type={type} onChange={(e) => onChange(e.target.value)}/>
-        </div>
+        <input style={{ fontSize: size }} className="bg-transparent appearance-none focus:outline-none border-none w-11/12" placeholder={label} type={type} onChange={(e) => onChange(e.target.value)}/>
     )
 }
 
