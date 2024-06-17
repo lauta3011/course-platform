@@ -1,9 +1,11 @@
 import React from "react";
 import { IInput } from "../../interfaces";
 
-const Input: React.FC<IInput> = ({ type, size, label, onChange }) => {
+const Input: React.FC<IInput> = ({ type, size, label, value, onChange }) => {
     return (
-        <input style={{ fontSize: size }} className="bg-transparent appearance-none focus:outline-none border-none w-11/12" placeholder={label} type={type} onChange={(e) => onChange(e.target.value)}/>
+        <div className="flex flex-grow">
+            <input style={{ fontSize: size }} value={value} className={`bg-transparent m-1 px-1 rounded appearance-none focus:outline-none border-none w-full`} placeholder={label} type={type} onChange={(e) => onChange(e.target.value)}/>
+        </div>
     )
 }
 

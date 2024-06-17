@@ -33,7 +33,7 @@ const Course: React.FC<ICourseItem> = ({ id, name, desc, resources }) => {
                 </div>
             </div>
 
-            {showResources && <Resources resources={resources} />}
+            {showResources && <Resources course={id} resources={resources} />}
         </>
     )
 }

@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 
 import { IResource } from "../../interfaces";
-import ResourceDetails from "../ResourceDetails";
-// import Icon from "../Icon";
-// import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import ResourceSummary from "../ResourceSummary";
+import ActionButton from "../ActionButton";
+import ResourcesForm from "../ResourcesForm";
 
-const Resource: React.FC<IResource> = ({ id, courseId, title, link, notes }) => {
+const Resource: React.FC<IResource> = ({ id, courseId, description, title, link, notes, handleDeleteResource }) => {
     const [showDetails, setShowDetails] = useState(false);
+    const [editResource, setEditResource] = useState(false);
 
     return (
-        <div onClick={() => setShowDetails(!showDetails)} className="flex justify-between mt-2 mb-2 p-4 hover:bg-slate-200">
-            <div className="inline-flex items-center">
-                <h3 className="font-semibold mr-6">{title}</h3>
-                <span>{notes}</span>
-            </div>
+        <div className="m-2 bg-slate-200">
+            {!editResource && 
+                <>
+                    <div style={{backgroundColor: showDetails ? 'rgb(203 213 225)' : null}} className="hover:bg-slate-300 p-4 flex justify-between ">
+                        <div onClick={() => setShowDetails(!showDetails)} className="inline-flex items-center">
+                            <a href={link} target="_blank" rel="noreferrer noopener" className="font-semibold mr-6 hover:text-blue-700">{title}</a>
+                            <span>{description}</span>
+                        </div>
 
-            {showDetails && <ResourceDetails courseId={courseId} id={id} title={title} link={link} />}
+                        <div className="inline-flex z-10">
+                            <ActionButton handlePrimary={() => setEditResource(true)} handleSecondary={() => handleDeleteResource(id)} primaryActionText="EDIT" secondAction={true} secondActionText="DELETE" />
+                        </div>
+                    
+                    </div>
+                    {showDetails && <ResourceSummary isEdit={false} notes={notes} />}
+                </>
+            }
+
+            {editResource && <ResourcesForm handleAdd={() => console.log('agrego!!!')} handleCancel={() => setEditResource(false)} course={courseId} title={title} link={link} description={description} notes={notes} />}
         </div>
     )
 }

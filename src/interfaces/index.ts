@@ -22,20 +22,31 @@ export interface ICourse {
 }
 
 export interface IResource {
-    id: number,
     title: string,
     link: string,
+    description: string,
+    courseId: number,
+    id?: number,
     notes?: string,
-    courseId: number
+    handleDeleteResource?: (id: number) => void
 }
 
 export interface IResources {
+    course: number,
     resources: IResource[]
 };
+
+export interface IResourceSummary {
+    isEdit: boolean,
+    handleSetResourceForm?: (value: string) => void,
+    notes?: string
+}
 
 export interface IInput {
     type: string,
     label: string,
     size: number,
+    background?: string,
+    value? :string,
     onChange: (change: string) => void
 }

@@ -1,29 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
+
 import Input from "../Input";
-import TextArea from "../TextArea";
 import ActionButton from "../ActionButton";
+import ResourceSummary from "../ResourceSummary";
 
-const ResourcesForm: React.FC = () => {
+import { IResource } from "../../interfaces";
+
+interface IResourceForm {
+    handleCancel: () => void,
+    handleAdd: (resource: IResource) => void,
+    course: number,
+    title?: string,
+    link?: string,
+    description?: string,
+    notes?: string
+}
+
+const ResourcesForm: React.FC<IResourceForm> = ({ course, title, link, description, notes, handleCancel, handleAdd }) => {
+    const [resourceForm, setResourceForm] = useState({
+        title: '' || title,
+        link: '' || link,
+        description: '' || description,
+        notes: '' || notes,
+        courseId: course 
+    });
+
+    const addResource = () => {
+        const { title, link, description } = resourceForm;
+
+        if(title !== '' && link !== '' && description !== '') {
+            handleAdd(resourceForm);
+        }
+    }
+
     return (
-        <div className="flex justify-between flex-col mt-2 mb-2 p-4 hover:bg-slate-200">
-            <div className="flex grow flex-row">
-                <Input size={20} type="text" label="Title" onChange={(change) => console.log(change)}  />
-                <Input size={20} type="text" label="Link" onChange={(change) => console.log(change)}  />
+        <div className="flex justify-between flex-col bg-slate-200 m-2">
+            <div className="inline-flex bg-slate-300 px-2 py-4">
+                <div className="flex flex-col">
+                    <Input background="bg-slate-200" value={resourceForm.title} size={23} type="text" label="Title" onChange={(value) => setResourceForm({ ...resourceForm, title: value }) }  />
+                    <Input background="bg-slate-200" value={resourceForm.link} size={14} type="text" label="Link" onChange={(value) => setResourceForm({ ...resourceForm, link: value })} />
+                </div>
+
+                <div className="flex flex-grow">
+                    <Input background="bg-slate-200" value={resourceForm.description} size={20} type="text" label="Description" onChange={(value) => setResourceForm({ ...resourceForm, description: value })} />
+                </div>
+
+                <div className="inline-flex z-10">
+                    <ActionButton  handlePrimary={() => addResource()} handleSecondary={() => handleCancel()} primaryActionText="CONFIRM" secondAction={true} secondActionText="CANCEL" />
+                </div>
             </div>
+
             
-            <ActionButton primaryActionText="CREATE" secondAction={true} secondActionText="CANCEL" handlePrimary={() => console.log('agrega resoruce')} handleSecondary={() => console.log('aaaa')}/>
+            <div>
+                <ResourceSummary handleSetResourceForm={(value) => setResourceForm({ ...resourceForm, notes: value })} isEdit={true} notes={notes} />
+            </div>
         </div>
-
-        // <div className="flex-col flex bg-slate-200 m-6 rounded">
-        //     <div className="flex grow flex-row">
-        //         <Input type="text" label="Title" onChange={(change) => console.log(change)}  />
-        //         <Input type="text" label="Link" onChange={(change) => console.log(change)}  />
-        //     </div>
-
-        //     <TextArea label="Notes" onChange={(change) => console.log(change)}  />
-
-        //     {/* TODO:  que agregar botones para ADD o CANCEL */}
-        // </div>
     )
 }
 

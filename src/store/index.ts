@@ -11,10 +11,13 @@ interface IStore {
     courses: any[],
     getCourses: () => void,
     addCourse: (course: ICourse) => void,
-    addResource: (resource: IResource) => void
+    addResource: (resource: IResource) => void,
+    deleteResource: (resource: number) => void
 }
 
-const coursesWithResourcesQuery = supabase.from('courses').select('id, title, description, icon_name, resources (id, title, link, notes)');
+const coursesWithResourcesQuery = supabase.from('courses').select(
+    'id, title, description, icon_name, created_at, resources (id, title, description, link, notes)'
+).order('created_at', { ascending: false });
 
 type CoursesWithResources = QueryData<typeof coursesWithResourcesQuery>;
 
@@ -31,6 +34,7 @@ export const useStore = create<IStore>((set) => ({
 
             const courses: CoursesWithResources = data;
 
+            console.log('daata ', data)
             set({ courses: courses });
         } catch (error) {
             console.error('Error at select: ', error);
@@ -54,17 +58,26 @@ export const useStore = create<IStore>((set) => ({
     addResource: async (resource: IResource) => {
         try {
             const { data, error } = await supabase.from('resources').insert([
-                { title: resource.title, description: resource.notes, link: resource.link }
+                { title: resource.title, description: resource.description, notes: resource.notes, link: resource.link, course_ref: resource.courseId}
             ]).select();
     
             if(error) {
                 throw new Error(error.message);
             }
-
-            console.log(data)
-
+            
         } catch (error) {
             console.log('Error at insert: ', error);
+        }
+    },
+    deleteResource: async (resource: number) => {
+        try {
+            const { data, error } = await supabase.from('resources').delete().eq('id', resource);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+        } catch (error) {
+            console.log('Error at delete: ', error);
         }
     }
 }))
