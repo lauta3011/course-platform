@@ -10,36 +10,47 @@ export interface IBannerButton {
 export interface IActionButton {
     primaryActionText: string,
     secondAction: boolean,
+    hasDelete?: boolean,
     secondActionText?: string,
     handlePrimary: () => void,
-    handleSecondary?: () => void
+    handleSecondary?: () => void,
+    handleDelete?: () => void
 }
 
 export interface ICourse {
+    id?: number,
     title: string,
     description: string,
-    icon: string
+    icon?: string,
+    handleEdit?: (course: any) => void
 }
 
 export interface IResource {
-    title: string,
-    link: string,
-    description: string,
-    courseId: number,
+    course_ref: number,
+    title?: string,
+    description?: string,
+    link?: string,
     id?: number,
     notes?: string,
-    handleDeleteResource?: (id: number) => void
+    handlePrimary?: (id: number) => void,
+    handleDelete?: (id: number) => void
 }
-
-export interface IResources {
-    course: number,
-    resources: IResource[]
-};
 
 export interface IResourceSummary {
     isEdit: boolean,
-    handleSetResourceForm?: (value: string) => void,
     notes?: string
+    handleSetResourceForm?: (value: string) => void,
+}
+
+export interface IResourceForm {
+    course: number,
+    id?: number,
+    title?: string,
+    link?: string,
+    description?: string,
+    notes?: string
+    handleCancel: () => void,
+    handlePrimary: (resource: IResource) => void,
 }
 
 export interface IInput {

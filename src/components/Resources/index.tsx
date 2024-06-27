@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 
-import { IResources } from "../../interfaces";
+import { IResource } from "../../interfaces";
+
 import ActionButton from "../ActionButton";
 import Resource from "../Resource";
 import ResourcesForm from "../ResourcesForm";
 import NoResources from "../NoResources";
+
 import { useStore } from "../../store";
 
-const Resources: React.FC<IResources> = ({ course, resources }) => {
-    const { addResource, deleteResource } = useStore((state) => state);
+const Resources: React.FC<IResource> = ({ course_ref }) => {
+    const { resources, deleteResource, addResource } = useStore((state) => state);
     const [resourceForm, setResourceForm] = useState(false);
+
+    const courseResources = resources[course_ref];
 
     return (
         <div className="bg-slate-50 relative flex-col ml-6 mr-6 pt-4 pb-4 -top-10 rounded shadow-inner">
@@ -17,14 +21,12 @@ const Resources: React.FC<IResources> = ({ course, resources }) => {
                 <ActionButton handlePrimary={() => setResourceForm(true)} secondAction={false} primaryActionText="ADD RESOURCE" />
             </div>
 
-            {resourceForm && <ResourcesForm course={course} handleAdd={(resource) => { addResource(resource); setResourceForm(false) }} handleCancel={() => setResourceForm(false)} />}
+            {resourceForm && <ResourcesForm course={course_ref} handlePrimary={(resource) => { addResource(resource); setResourceForm(false) }} handleCancel={() => setResourceForm(false)} />}
 
             {
-                resources?.length > 0 ?
-                resources?.map((res, index) => {
-                    return (
-                        <Resource key={index} {...res} handleDeleteResource={(id) => deleteResource(id)}/>
-                    )
+                courseResources?.length > 0 ?
+                courseResources?.map((item: IResource, index: number) => {
+                    return <Resource key={index} {...item} handleDelete={(id) => deleteResource(course_ref, id)}/>
                 }) : <NoResources />
             }
 

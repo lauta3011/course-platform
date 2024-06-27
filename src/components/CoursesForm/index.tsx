@@ -10,23 +10,38 @@ import { useStore } from "../../store";
 import Input from "../Input";
 
 interface ICourseForm {
-    handleClose: () => void
+    handleClose: () => void,
+    courseToEdit?: any
 }
 
-const CourseForm: React.FC<ICourseForm> = ({ handleClose }) => {
-    const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
+const CourseForm: React.FC<ICourseForm> = ({ courseToEdit, handleClose }) => {
+    const [courseForm, setCourseForm] = useState({
+        id: courseToEdit?.id,
+        title: courseToEdit?.title,
+        description: courseToEdit?.description
+    })
 
-    const { addCourse } = useStore((state) => state);
+    const { addCourse, editCourse, deleteCourse } = useStore((state) => state);
+
+    const handleDeleteCourse = (id: number) => {
+        deleteCourse(id);
+        handleClose();
+    }
 
     function handleAddNewCourse() {
-        if (title !== '' && desc !== '') {
+        const { id, title, description } = courseForm;
+        if (title !== '' && description !== '') {
             const course: ICourse = {
+                id: id,
                 title: title,
-                description: desc,
+                description: description,
                 icon: faEraser.iconName
             }
-            addCourse(course);
+            if(courseToEdit) {
+                editCourse(course);
+            } else {
+                addCourse(course);
+            }
             handleClose();
         }
     }
@@ -44,15 +59,15 @@ const CourseForm: React.FC<ICourseForm> = ({ handleClose }) => {
 
                 <div className="flex flex-col flex-grow">
                     <div className="h-14">
-                        <Input size={28} label="Course title" type="text" onChange={(value) => setTitle(value)}/>
+                        <Input size={28} label="Course title" value={courseForm.title || ''} type="text" onChange={(value) => setCourseForm({...courseForm, title: value})} />
                     </div>
                     <div>
-                        <Input size={18} label="Description of what you are learning" type="text" onChange={(value) => setDesc(value)}/>
+                        <Input size={18} label="Description of what you are learning" value={courseForm.description || ''} type="text" onChange={(value) => setCourseForm({...courseForm, description: value})} />
                     </div>
                 </div>
             </div>
 
-            <ActionButton handleSecondary={() => handleClose()} handlePrimary={() => handleAddNewCourse()} secondAction={true} primaryActionText="ADD COURSE" secondActionText="CANCEL"/>
+            <ActionButton handleDelete={() => handleDeleteCourse(courseForm.id)} handleSecondary={() => handleClose()} handlePrimary={() => handleAddNewCourse()} secondAction={true} hasDelete={courseToEdit ? true : false} primaryActionText="CONFIRM" secondActionText="CANCEL"/>
         </div>
     )
 }
