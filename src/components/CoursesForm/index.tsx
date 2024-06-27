@@ -8,6 +8,7 @@ import ActionButton from "../ActionButton";
 
 import { useStore } from "../../store";
 import Input from "../Input";
+import IconPicker from "../IconPicker";
 
 interface ICourseForm {
     handleClose: () => void,
@@ -15,18 +16,19 @@ interface ICourseForm {
 }
 
 const CourseForm: React.FC<ICourseForm> = ({ courseToEdit, handleClose }) => {
+    const [showIconPicker, setShowIconPicker] = useState(false);
     const [courseForm, setCourseForm] = useState({
         id: courseToEdit?.id,
         title: courseToEdit?.title,
         description: courseToEdit?.description
-    })
+    });
 
     const { addCourse, editCourse, deleteCourse } = useStore((state) => state);
 
     const handleDeleteCourse = (id: number) => {
         deleteCourse(id);
         handleClose();
-    }
+    };
 
     function handleAddNewCourse() {
         const { id, title, description } = courseForm;
@@ -44,7 +46,7 @@ const CourseForm: React.FC<ICourseForm> = ({ courseToEdit, handleClose }) => {
             }
             handleClose();
         }
-    }
+    };
 
     return (
         <div className="flex flex-col overflow-hidden rounded p-4 bg-slate-300 relative m-5 z-10 shadow-2xl">
@@ -53,7 +55,7 @@ const CourseForm: React.FC<ICourseForm> = ({ courseToEdit, handleClose }) => {
             </div>
 
             <div className="flex items-center mt-2 mb-2 bg-slate-100 rounded">
-                <div className="flex items-center m-4">
+                <div onClick={() => setShowIconPicker(!showIconPicker)} className="flex items-center m-4">
                     <Icon opacity="100%" size={56} iconBkg="#36d336" icon={faEraser} />
                 </div>
 
@@ -68,6 +70,8 @@ const CourseForm: React.FC<ICourseForm> = ({ courseToEdit, handleClose }) => {
             </div>
 
             <ActionButton handleDelete={() => handleDeleteCourse(courseForm.id)} handleSecondary={() => handleClose()} handlePrimary={() => handleAddNewCourse()} secondAction={true} hasDelete={courseToEdit ? true : false} primaryActionText="CONFIRM" secondActionText="CANCEL"/>
+
+            {showIconPicker && <IconPicker />}
         </div>
     )
 }
