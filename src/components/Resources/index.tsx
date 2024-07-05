@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { IResource } from "../../interfaces";
 
@@ -13,7 +13,9 @@ const Resources: React.FC<IResource> = ({ course_ref }) => {
     const { resources, deleteResource, addResource } = useStore((state) => state);
     const [resourceForm, setResourceForm] = useState(false);
 
-    const courseResources = resources[course_ref];
+    const cachedResources = useMemo(() => resources, [resources])
+
+    const courseResources = cachedResources[course_ref];
 
     return (
         <div className="bg-slate-50 relative flex-col ml-6 mr-6 pt-4 pb-4 -top-10 rounded shadow-inner">
