@@ -2,6 +2,9 @@ import React from "react";
 import { IActionButton } from "../../interfaces";
 
 const ActionButton: React.FC<IActionButton> = ({ hasDelete, primaryActionText, secondAction, secondActionText, handlePrimary, handleSecondary, handleDelete }) => {
+
+    // TODO: no es responsive y ademas se ve horrible !!!!!
+
     return (
         <div className="inline-flex items-center m-2 rounded">
             <div className="flex-grow inline-flex" style={{ justifyContent: hasDelete ? 'space-between' : 'end' }}>

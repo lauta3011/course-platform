@@ -13,6 +13,8 @@ const Resource: React.FC<IResource> = ({ id, course_ref, description, title, lin
 
     const { editResource } = useStore((state) => state);
 
+    // TODO: los textos no son responsive !!!!!!!!!!
+
     return (
         <div className="m-2 bg-slate-200">
             {!editForm && 
